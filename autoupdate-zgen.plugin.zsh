@@ -41,17 +41,17 @@ _zgen-check-for-updates() {
       # with the $HOME directory as the prefix removed
       # (That's what the "${${ZGEN_DIR}#${HOME}}" syntax does: it removes the
       # "$HOME" prefix from "$ZGEN_DIR")
-      ZGEN_SYSTEM_RECEIPT_F="${${ZGEN_DIR}#${HOME}}/.zgen_system_lastupdate"
+      ZGEN_SYSTEM_RECEIPT_F="${${ZGEN_DIR}#${HOME}}/.zgenom_system_lastupdate"
     else
-      ZGEN_SYSTEM_RECEIPT_F='.zgen_system_lastupdate'
+      ZGEN_SYSTEM_RECEIPT_F='.zgenom_system_lastupdate'
     fi
   fi
 
   if [ -z "${ZGEN_PLUGIN_RECEIPT_F}" ]; then
     if [ -n "${ZGEN_DIR}" ]; then
-      ZGEN_PLUGIN_RECEIPT_F="${${ZGEN_DIR}#${HOME}}/.zgen_plugin_lastupdate"
+      ZGEN_PLUGIN_RECEIPT_F="${${ZGEN_DIR}#${HOME}}/.zgenom_plugin_lastupdate"
     else
-      ZGEN_PLUGIN_RECEIPT_F='.zgen_plugin_lastupdate'
+      ZGEN_PLUGIN_RECEIPT_F='.zgenom_plugin_lastupdate'
     fi
   fi
 
@@ -64,7 +64,7 @@ _zgen-check-for-updates() {
 
   if [[ ${last_plugin} -gt ${plugins_seconds} ]]; then
     if [[ ! -z "${ZGEN_AUTOUPDATE_VERBOSE}" ]]; then
-      echo "It has been $(expr ${last_plugin} / $day_seconds) days since your zgen plugins were updated"
+      echo "It has been $(expr ${last_plugin} / $day_seconds) days since your zgenom plugins were updated"
       echo "Updating plugins"
     fi
     zgenom update
@@ -74,8 +74,8 @@ _zgen-check-for-updates() {
 
   if [[ ${last_system} -gt ${system_seconds} ]]; then
     if [[ ! -z "${ZGEN_AUTOUPDATE_VERBOSE}" ]]; then
-      echo "It has been $(expr ${last_plugin} / ${day_seconds}) days since your zgen was updated"
-      echo "Updating zgen..."
+      echo "It has been $(expr ${last_plugin} / ${day_seconds}) days since your zgenom was updated"
+      echo "Updating zgenom..."
     fi
     zgenom selfupdate
     date +%s >! ~/${ZGEN_SYSTEM_RECEIPT_F}
@@ -83,13 +83,13 @@ _zgen-check-for-updates() {
 }
 
 # Don't update if we're running as different user than whoever
-# owns ~/.zgen. This prevents sudo runs from leaving root-owned
-# files & directories in ~/.zgen that will break future updates
+# owns ~/.zgenom. This prevents sudo runs from leaving root-owned
+# files & directories in ~/.zgenom that will break future updates
 # by the user.
 #
 # Use ls and awk instead of stat because stat has incompatible arguments
 # on linux, macOS and FreeBSD.
-local zgen_owner=$(ls -ld ${ZGEN_DIR:-$HOME/.zgen} | awk '{print $3}')
+local zgen_owner=$(ls -ld ${ZGEN_DIR:-$HOME/.zgenom} | awk '{print $3}')
 if [[ "$zgen_owner" == "$USER" ]]; then
   zmodload zsh/system
   lockfile=~/.zgen_autoupdate_lock
