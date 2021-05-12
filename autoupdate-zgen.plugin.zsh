@@ -67,8 +67,9 @@ _zgen-check-for-updates() {
       echo "It has been $(expr ${last_plugin} / $day_seconds) days since your zgen plugins were updated"
       echo "Updating plugins"
     fi
-    zgen update
+    zgenom update
     date +%s >! ~/${ZGEN_PLUGIN_RECEIPT_F}
+    zgenom save
   fi
 
   if [[ ${last_system} -gt ${system_seconds} ]]; then
@@ -76,7 +77,7 @@ _zgen-check-for-updates() {
       echo "It has been $(expr ${last_plugin} / ${day_seconds}) days since your zgen was updated"
       echo "Updating zgen..."
     fi
-    zgen selfupdate
+    zgenom selfupdate
     date +%s >! ~/${ZGEN_SYSTEM_RECEIPT_F}
   fi
 }
